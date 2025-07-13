@@ -1,3 +1,4 @@
+
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -13,14 +14,17 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={
-          <>
-            <Hero />
-            <ProblemSection />
-            <SolutionSection />
-            <Testimonials />
-          </>
-        } />
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <ProblemSection />
+              <SolutionSection />
+              <Testimonials />
+            </>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>

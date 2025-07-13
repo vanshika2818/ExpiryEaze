@@ -31,7 +31,7 @@ const Header = () => {
             <FaShoppingCart />
             <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs px-1 rounded-full">0</span>
           </Link>
-          <Link to="/login" >Login</Link>
+          <Link to="/login" >Log In</Link>
         </nav>
       </div>
     </header>

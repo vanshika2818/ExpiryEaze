@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -14,11 +14,16 @@ const Login = () => {
         email,
         password,
       });
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+setUser(res.data.user);
+
+      const user = res.data.user;
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
       alert('✅ Login successful!');
-      console.log(res.data);
+      navigate("/");
     } catch (err) {
-      alert('❌ Login failed!');
-      console.error(err.response?.data || err.message);
+      alert(err.response?.data?.msg || '❌ Login failed!');
     }
   };
 
@@ -29,36 +34,18 @@ const Login = () => {
 
         <form onSubmit={handleLogin}>
           <label className="block mb-1 font-medium">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 mb-4 border rounded border-green-300"
-            required
-          />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 mb-4 border rounded border-green-300" required />
 
           <label className="block mb-1 font-medium">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 mb-6 border rounded border-green-300"
-            required
-          />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2 mb-6 border rounded border-green-300" required />
 
-          <button
-            type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded"
-          >
+          <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded">
             Login
           </button>
         </form>
 
         <p className="text-center text-sm mt-6">
-          Don’t have an account?{' '}
-          <Link to="/signup" className="text-green-700 underline hover:text-green-800">
-            Sign up
-          </Link>
+          Don’t have an account? <Link to="/signup" className="text-green-700 underline hover:text-green-800">Sign up</Link>
         </p>
       </div>
     </div>

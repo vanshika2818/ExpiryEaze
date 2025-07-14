@@ -20,7 +20,6 @@ setUser(res.data.user);
       const user = res.data.user;
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
-      alert('✅ Login successful!');
       navigate("/");
     } catch (err) {
       alert(err.response?.data?.msg || '❌ Login failed!');

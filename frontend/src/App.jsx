@@ -9,6 +9,8 @@ import Testimonials from './components/Testimonials';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ProductsPage from './pages/ProductsPage';
+import AddProductPage from './pages/AddProductPage.jsx'; // expects a default export
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -39,6 +41,8 @@ function App() {
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup setUser={setUser} />} />
         <Route path="/products" element={<ProductsPage />} />
+        <Route path="/add-product" element={<AddProductPage />} />
+
       </Routes>
       <Footer />
     </>

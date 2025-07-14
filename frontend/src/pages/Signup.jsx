@@ -26,7 +26,6 @@ const Signup = ({ setUser }) => {
       const user = res.data.user;
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
-      alert('✅ Signup successful!');
       navigate("/");
     } catch (err) {
       alert(err.response?.data?.msg || '❌ Signup failed!');

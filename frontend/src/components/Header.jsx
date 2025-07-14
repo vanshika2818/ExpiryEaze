@@ -11,12 +11,13 @@ const Header = ({ user, setUser }) => {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        if (!user) setUser(parsed); // <- Don't overwrite if already set
+        setUser(parsed);
       } catch {
+        console.error("Invalid user in storage");
         localStorage.removeItem("user");
       }
     }
-  }, [user, setUser]); // React to changes
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -32,6 +33,14 @@ const Header = ({ user, setUser }) => {
         <Link to="/">Home</Link>
         <Link to="/products">Products</Link>
         <Link to="/about">About Us</Link>
+
+        {/* ✅ Vendor-only "Add Items" link */}
+        {user?.role === "vendor" && (
+          <Link to="/add-product" className="text-green-700 font-semibold hover:underline">
+            Add Items
+          </Link>
+        )}
+
         <Link to="/cart" className="relative">
           <FaShoppingCart />
           <span className="absolute -top-2 -right-2 text-xs bg-green-600 text-white px-1 rounded-full">0</span>
@@ -43,7 +52,10 @@ const Header = ({ user, setUser }) => {
               {user.name} ({user.role})
             </button>
             {showLogout && (
-              <div className="absolute right-0 bg-white border mt-2 px-4 py-2 text-red-600 cursor-pointer" onClick={handleLogout}>
+              <div
+                className="absolute right-0 bg-white border mt-2 px-4 py-2 text-red-600 cursor-pointer"
+                onClick={handleLogout}
+              >
                 Log Out
               </div>
             )}

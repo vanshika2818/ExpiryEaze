@@ -35,11 +35,12 @@ const Header = ({ user, setUser }) => {
         <Link to="/about">About Us</Link>
 
         {/* ✅ Vendor-only "Add Items" link */}
-        {user?.role === "vendor" && (
-          <Link to="/add-product" className="text-green-700 font-semibold hover:underline">
-            Add Items
-          </Link>
-        )}
+        {user && user.role === 'vendor' && (
+  <Link to="/vendor-dashboard" className="text-green-800 font-semibold hover:underline">
+    Dashboard
+  </Link>
+)}
+
 
         <Link to="/cart" className="relative">
           <FaShoppingCart />

@@ -1,28 +1,150 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const AddProductPage = () => {
+  const [image, setImage] = useState(null);
+  const [category, setCategory] = useState('');
+  const [subcategory, setSubcategory] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [originalPrice, setOriginalPrice] = useState('');
+  const [discountedPrice, setDiscountedPrice] = useState('');
+  const [stock, setStock] = useState('');
+
+  const subcategoriesMap = {
+    Food: [
+        'Canned & Preserved Foods',
+    'Dry & Powdered Foods',
+    'Spices & Masalas',
+    'Staples & Grains',
+    'Snacks (Sealed & Dry)',
+    'Baking & Cooking Essentials',
+    'Sweeteners & Condiments',
+    'Ready-to-eat Packaged Items'
+    ],
+    Medicine: [
+        'Basic Medicines',
+    'OTC Supplements',
+    'First-aid Essentials',
+    'Immunity Boosters'
+    ],
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) setImage(file);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert('🟢 Product published!');
+    // TODO: Add form submission logic here
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-green-50 px-4 py-10">
-      <div className="max-w-xl w-full bg-white p-8 rounded shadow-md border border-green-200">
-        <h2 className="text-2xl font-bold text-green-800 mb-6">Add New Product</h2>
+    <div className="max-w-3xl mx-auto p-6 bg-white shadow rounded mt-6">
+      <h2 className="text-2xl font-bold mb-6 text-green-700">🛒 Add New Product</h2>
+      
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Image Upload */}
+        <div className="border-2 border-dashed border-green-400 p-4 rounded text-center">
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
+          {image && <p className="mt-2 text-green-600">✔️ {image.name}</p>}
+        </div>
 
-        <form>
-          <label className="block mb-2 font-medium">Product Name</label>
-          <input type="text" className="w-full border px-4 py-2 rounded mb-4" required />
+        {/* Product Name */}
+        <input
+          type="text"
+          placeholder="Product Name (e.g., Amul Cheese 200g)"
+          className="w-full p-2 border rounded"
+          required
+        />
 
-          <label className="block mb-2 font-medium">Price</label>
-          <input type="number" className="w-full border px-4 py-2 rounded mb-4" required />
+        {/* Category */}
+        <select
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setSubcategory('');
+          }}
+          className="w-full p-2 border rounded"
+          required
+        >
+          <option value="">Select Category</option>
+          <option value="Food">Food</option>
+          <option value="Medicine">Medicine</option>
+        </select>
 
-          <label className="block mb-2 font-medium">Expiry Date</label>
-          <input type="date" className="w-full border px-4 py-2 rounded mb-6" required />
+        {/* Subcategory */}
+        {category && (
+          <select
+            value={subcategory}
+            onChange={(e) => setSubcategory(e.target.value)}
+            className="w-full p-2 border rounded"
+            required
+          >
+            <option value="">Select Subcategory</option>
+            {subcategoriesMap[category].map((sub) => (
+              <option key={sub} value={sub}>
+                {sub}
+              </option>
+            ))}
+          </select>
+        )}
 
-          <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded">
-            Add Product
-          </button>
-        </form>
-      </div>
+        {/* Expiry Date */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Expiry Date</label>
+          <input
+            type="date"
+            value={expiryDate}
+            onChange={(e) => setExpiryDate(e.target.value)}
+            className="w-full p-2 border rounded"
+            required
+          />
+          {expiryDate && new Date(expiryDate) < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) && (
+            <p className="text-red-600 mt-1 text-sm">⚠️ This product expires in less than 7 days.</p>
+          )}
+        </div>
+
+        {/* Pricing */}
+        <div className="flex gap-4">
+          <input
+            type="number"
+            placeholder="Original Price (₹)"
+            value={originalPrice}
+            onChange={(e) => setOriginalPrice(e.target.value)}
+            className="w-1/2 p-2 border rounded"
+            required
+          />
+          <input
+            type="number"
+            placeholder="Discounted Price (₹)"
+            value={discountedPrice}
+            onChange={(e) => setDiscountedPrice(e.target.value)}
+            className="w-1/2 p-2 border rounded"
+            required
+          />
+        </div>
+
+        {/* Stock */}
+        <input
+          type="number"
+          placeholder="Stock Quantity (e.g., 20 units)"
+          value={stock}
+          onChange={(e) => setStock(e.target.value)}
+          className="w-full p-2 border rounded"
+          required
+        />
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded font-semibold"
+        >
+          ✅ Publish Now
+        </button>
+      </form>
     </div>
   );
 };
 
-export default AddProductPage; // ✅ REQUIRED
+export default AddProductPage;

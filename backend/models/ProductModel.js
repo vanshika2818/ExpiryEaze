@@ -1,3 +1,4 @@
+// models/ProductModel.js
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
@@ -5,14 +6,17 @@ const productSchema = new mongoose.Schema({
   image: String,
   price: Number,
   discount: Number,
-  expiryDate: Date,
-  status: String, // Active, Low Stock, Expiring
-  category: String, // Food, Electronics etc.
-  subcategory: String, // Dairy, Medicine etc.
+  expiryDate: String,
+  status: String,
+  category: String,
+  subcategory: String,
   vendorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-  }
+  },
+  stock: Number,
 });
 
-export default mongoose.model("Product", productSchema);
+const Product = mongoose.model("Product", productSchema);
+
+export default Product;

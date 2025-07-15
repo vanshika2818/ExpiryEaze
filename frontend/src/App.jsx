@@ -12,6 +12,7 @@ import ProductsPage from './pages/ProductsPage';
 import AddProductPage from './pages/AddProductPage.jsx'; // expects a default export
 import VendorDashboard from './pages/VendorDashboard.jsx';
 import MyItemsPage from './pages/MyItemsPage.jsx';
+import SubcategoryProducts from "./pages/SubcategoryProducts.jsx";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,6 +46,7 @@ function App() {
         <Route path="/add-product" element={<AddProductPage />} />
         <Route path="/vendor-dashboard" element={<VendorDashboard />} />
         <Route path="/my-items" element={<MyItemsPage />} />
+        <Route path="/subcategory-products" element={<SubcategoryProducts />} />
 
       </Routes>
       <Footer />

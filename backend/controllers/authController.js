@@ -36,22 +36,21 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Step 1: Find user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    // Step 2: Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ msg: "Invalid password" });
     }
 
-    // Step 3: Send user info (excluding password)
+    // ✅ Add _id in the returned user object
     res.status(200).json({
       msg: "Login successful",
       user: {
+        _id: user._id,           // 👈 THIS WAS MISSING
         name: user.name,
         email: user.email,
         role: user.role,
@@ -62,4 +61,5 @@ export const login = async (req, res) => {
     res.status(500).json({ msg: "Something went wrong!" });
   }
 };
+
 

@@ -1,56 +1,75 @@
-import React, { useState } from 'react';
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
 
-const MyItemsPage = () => {
-  const [productList, setProductList] = useState([
-    { name: 'Amul Cheese', expiry: 'Jul 25', discount: '60%', status: 'Active' },
-    { name: 'Crocin', expiry: 'Aug 10', discount: '50%', status: 'Low Stock' }
-  ]);
+// const MyItems = () => {
+//   const [products, setProducts] = useState([]);
+//   const user = JSON.parse(localStorage.getItem("user"));
+
+//   useEffect(() => {
+//     axios.get(`http://localhost:5000/api/products/my-products/${user._id}`)
+//       .then(res => setProducts(res.data))
+//       .catch(err => console.error(err));
+//   }, []);
+
+//   return (
+//     <div className="p-6">
+//       <h2 className="text-xl font-bold mb-4">My Products</h2>
+//       {products.length === 0 ? <p>No items added yet.</p> :
+//         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+//           {products.map(p => (
+//             <div key={p._id} className="border p-4 rounded shadow">
+//               <img src={p.image} alt={p.name} className="w-full h-32 object-cover" />
+//               <h3 className="font-bold">{p.name}</h3>
+//               <p>₹{p.price} (-{p.discount}%)</p>
+//               <p>Expiry: {new Date(p.expiryDate).toLocaleDateString()}</p>
+//               <span className="text-sm text-gray-600">{p.category} &gt; {p.subcategory}</span>
+
+//             </div>
+//           ))}
+//         </div>
+//       }
+//     </div>
+//   );
+// };
+
+// export default MyItems;
+
+
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const MyItems = () => {
+  const [products, setProducts] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    if (!user || !user._id) return;
+    axios
+      .get(`http://localhost:8000/api/products/my-products/${user._id}`)
+      .then(res => setProducts(res.data))
+      .catch(err => console.error(err));
+  }, []);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">My Items</h2>
-
-      <h3 className="text-xl font-semibold mb-4">Existing Product List</h3>
-      <table className="min-w-full border border-gray-300 text-sm">
-        <thead>
-          <tr className="bg-green-100">
-            <th className="border p-2 text-left">Product</th>
-            <th className="border p-2 text-left">Expiry</th>
-            <th className="border p-2 text-left">Discount</th>
-            <th className="border p-2 text-left">Status</th>
-            <th className="border p-2 text-left">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {productList.map((item, idx) => (
-            <tr key={idx}>
-              <td className="border p-2">{item.name}</td>
-              <td className="border p-2">{item.expiry}</td>
-              <td className="border p-2">{item.discount} OFF</td>
-              <td
-                className={`border p-2 font-semibold ${
-                  item.status === 'Active'
-                    ? 'text-green-600'
-                    : item.status === 'Low Stock'
-                    ? 'text-orange-500'
-                    : 'text-red-600'
-                }`}
-              >
-                {item.status === 'Active' && '🟢 '}
-                {item.status === 'Low Stock' && '🟠 '}
-                {item.status === 'Expiring Today' && '🔴 '}
-                {item.status}
-              </td>
-              <td className="border p-2 space-x-2">
-                <button className="text-blue-600 hover:underline">🖊️ Edit</button>
-                <button className="text-green-700 hover:underline">🔔 Boost</button>
-              </td>
-            </tr>
+    <div className="p-6">
+      <h2 className="text-xl font-bold mb-4">My Products</h2>
+      {products.length === 0 ? (
+        <p>No items added yet.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {products.map(p => (
+            <div key={p._id} className="border p-4 rounded shadow">
+              <img src={p.image} alt={p.name} className="w-full h-32 object-cover" />
+              <h3 className="font-bold">{p.name}</h3>
+              <p>₹{p.price} (-{p.discount}%)</p>
+              <p>Expiry: {new Date(p.expiryDate).toLocaleDateString()}</p>
+              <span className="text-sm text-gray-600">{p.category} &gt; {p.subcategory}</span>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      )}
     </div>
   );
 };
 
-export default MyItemsPage;
+export default MyItems;

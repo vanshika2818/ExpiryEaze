@@ -24,10 +24,18 @@ const Signup = ({ setUser }) => {
       });
 
       const user = res.data.user;
+
+      if (!user || !user._id) {
+        alert("❌ Invalid user data.");
+        return;
+      }
+
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
+      alert("🟢 Signed up as " + user.role);
       navigate("/");
     } catch (err) {
+      console.error(err);
       alert(err.response?.data?.msg || '❌ Signup failed!');
     }
   };

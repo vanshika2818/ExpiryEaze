@@ -8,6 +8,8 @@ const AddProductPage = () => {
   const [originalPrice, setOriginalPrice] = useState('');
   const [discountedPrice, setDiscountedPrice] = useState('');
   const [stock, setStock] = useState('');
+  const [productName, setProductName] = useState('');
+
 
   const subcategoriesMap = {
     Food: [
@@ -33,11 +35,47 @@ const AddProductPage = () => {
     if (file) setImage(file);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert('🟢 Product published!');
-    // TODO: Add form submission logic here
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const user = JSON.parse(localStorage.getItem("user")); // Get vendor info
+
+  if (!user || !user._id) {
+    alert("❌ User not found. Please log in again.");
+    return;
+  }
+
+  const productData = {
+    name: productName,
+    image: image ? URL.createObjectURL(image) : "", // Use actual URL if using Cloudinary
+    price: originalPrice,
+    discount: ((originalPrice - discountedPrice) / originalPrice * 100).toFixed(0),
+    expiryDate,
+    status: "Active", // You can make this dynamic later
+    category,
+    subcategory,
+    vendorId: user._id,
+    stock: stock,
   };
+
+  try {
+    const res = await fetch("http://localhost:8000/api/products/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(productData),
+    });
+
+    if (res.ok) {
+      alert("🟢 Product published successfully!");
+    } else {
+      alert("❌ Error adding product.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("❌ Server error.");
+  }
+};
+
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow rounded mt-6">
@@ -52,11 +90,14 @@ const AddProductPage = () => {
 
         {/* Product Name */}
         <input
-          type="text"
-          placeholder="Product Name (e.g., Amul Cheese 200g)"
-          className="w-full p-2 border rounded"
-          required
-        />
+  type="text"
+  placeholder="Product Name (e.g., Amul Cheese 200g)"
+  className="w-full p-2 border rounded"
+  required
+  value={productName}
+  onChange={(e) => setProductName(e.target.value)}
+/>
+
 
         {/* Category */}
         <select

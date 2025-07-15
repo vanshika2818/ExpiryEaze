@@ -14,14 +14,20 @@ const Login = ({ setUser }) => {
         email,
         password,
       });
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-setUser(res.data.user);
 
       const user = res.data.user;
+
+      if (!user || !user._id) {
+        alert("❌ Invalid user data received.");
+        return;
+      }
+
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user);
+      alert("🟢 Logged in as " + user.role);
       navigate("/");
     } catch (err) {
+      console.error(err);
       alert(err.response?.data?.msg || '❌ Login failed!');
     }
   };

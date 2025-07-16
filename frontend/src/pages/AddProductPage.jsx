@@ -13,13 +13,13 @@ const AddProductPage = () => {
 
   const subcategoriesMap = {
     Food: [
-        'Canned & Preserved Foods',
-    'Dry & Powdered Foods',
-    'Spices & Masalas',
-    'Staples & Grains',
-    'Snacks (Sealed & Dry)',
-    'Baking & Cooking Essentials',
-    'Sweeteners & Condiments',
+        'Canned and Preserved Foods',
+    'Dry and Powdered Foods',
+    'Spices and Masalas',
+    'Staples and Grains',
+    'Snacks (Sealed and Dry)',
+    'Baking and Cooking Essentials',
+    'Sweeteners and Condiments',
     'Ready-to-eat Packaged Items'
     ],
     Medicine: [

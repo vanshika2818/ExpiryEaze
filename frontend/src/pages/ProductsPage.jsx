@@ -22,7 +22,7 @@ const ProductsPage = () => {
         <div className="p-6 bg-white rounded-lg shadow">
           <h2 className="text-2xl font-semibold text-green-800 mb-4">🍱 Food and Groceries</h2>
           <ul className="pl-4 list-disc text-green-700 space-y-2 cursor-pointer">
-            <li onClick={() => handleSubcategoryClick('Food','Canned  Preserved Foods')}>Canned and Preserved Foods</li>
+            <li onClick={() => handleSubcategoryClick('Food','Canned and Preserved Foods')}>Canned and Preserved Foods</li>
             <li onClick={() => handleSubcategoryClick('Food','Dry and Powdered Foods')}>Dry and Powdered Foods</li>
             <li onClick={() => handleSubcategoryClick('Food','Spices and Masalas')}>Spices and Masalas</li>
             <li onClick={() => handleSubcategoryClick('Food','Staples and Grains')}>Staples and Grains</li>

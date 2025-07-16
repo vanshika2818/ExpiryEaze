@@ -1,64 +1,42 @@
 
+
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+import ProductCard from '../components/ProductCard'; // ✅ updated path
 
 const SubcategoryProducts = () => {
-  const { search } = useLocation();
-  const queryParams = new URLSearchParams(search);
-  const category = queryParams.get("category");
-  const subcategory = queryParams.get("subcategory");
-
   const [products, setProducts] = useState([]);
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get('category');
+  const subcategory = searchParams.get('subcategory');
 
   useEffect(() => {
     const fetchProducts = async () => {
-  try {
-    const res = await fetch(`http://localhost:8000/api/products/filter?category=${category}&subcategory=${subcategory}`);
-    const data = await res.json();
+      try {
+        console.log("Querying for:", { category, subcategory }); // ✅ helpful log
+        const res = await axios.get(
+  `http://localhost:8000/api/products/subcategory-products?category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}`
+);
 
-    if (!Array.isArray(data)) {
-      console.error("❌ Expected array, got:", data);
-      setProducts([]);
-    } else {
-      setProducts(data);
-    }
-  } catch (err) {
-    console.error("❌ Error fetching products:", err);
-    setProducts([]);
-  }
-};
-
+        setProducts(res.data);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      }
+    };
 
     if (category && subcategory) fetchProducts();
   }, [category, subcategory]);
 
   return (
-    <div className="min-h-screen px-4 py-8 bg-green-50">
-      <h1 className="text-3xl font-bold text-green-700 mb-6">
-        Showing: {subcategory} in {category}
-      </h1>
-
+    <div className="px-4 py-6">
+      <h2 className="text-2xl font-bold text-green-800 mb-4">{subcategory}</h2>
       {products.length === 0 ? (
-        <p className="text-green-800">No products found in this subcategory.</p>
+        <p className="text-red-500">No products found.</p>
       ) : (
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
-            <div key={product._id} className="border border-green-300 rounded-lg p-4 bg-white shadow">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-40 object-cover rounded"
-              />
-              <h2 className="text-xl font-semibold mt-2 text-green-800">{product.name}</h2>
-              <p className="text-sm text-green-600">Stock: {product.stock}</p>
-              <p className="text-sm text-green-600">Expires on: {product.expiryDate}</p>
-              <p className="text-sm text-green-800 font-bold">
-                ₹{product.price} → <span className="line-through text-red-500">{(product.price / (1 - product.discount / 100)).toFixed(0)}</span>
-              </p>
-              <button className="mt-2 bg-green-600 text-white py-1 px-3 rounded hover:bg-green-700">
-                Add to Cart
-              </button>
-            </div>
+            <ProductCard key={product._id} product={product} />
           ))}
         </div>
       )}
@@ -67,3 +45,4 @@ const SubcategoryProducts = () => {
 };
 
 export default SubcategoryProducts;
+

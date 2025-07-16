@@ -13,6 +13,8 @@ import AddProductPage from './pages/AddProductPage.jsx'; // expects a default ex
 import VendorDashboard from './pages/VendorDashboard.jsx';
 import MyItemsPage from './pages/MyItemsPage.jsx';
 import SubcategoryProducts from "./pages/SubcategoryProducts.jsx";
+import ProductDetail from './components/ProductDetail'; // adjust path if needed
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -47,6 +49,7 @@ function App() {
         <Route path="/vendor-dashboard" element={<VendorDashboard />} />
         <Route path="/my-items" element={<MyItemsPage />} />
         <Route path="/subcategory-products" element={<SubcategoryProducts />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
 
       </Routes>
       <Footer />

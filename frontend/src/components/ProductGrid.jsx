@@ -3,19 +3,34 @@ import ProductCard from "./ProductCard";
 
 const products = [
   {
-    id: 1,
+    _id: "1",
     name: "Organic Greek Yogurt (500g)",
     image: "/images/yogurt.jpg",
-    originalPrice: 499,
-    discountedPrice: 199,
-    expiry: "1 day",
+    price: 499,
     discount: 60,
+    discountedPrice: 199,
+    expiryInDays: 1,
     store: "FreshMart",
     distance: "0.5km",
-    badges: ["Sealed", "Refrigerated"],
-    stockLeft: 3
+    safety: ["Sealed", "Refrigerated"],
+    stock: 3,
+    category: "Food",
   },
-  // Add more products here
+  {
+    _id: "2",
+    name: "Ayurvedic Cough Syrup",
+    image: "/images/cough-syrup.jpg",
+    price: 220,
+    discount: 50,
+    discountedPrice: 110,
+    expiryInDays: 5,
+    store: "MediLife",
+    distance: "1.2km",
+    safety: "Check expiry before use",
+    stock: 2,
+    category: "Medicine",
+  },
+  // ➕ Add more dummy products as needed
 ];
 
 const ProductGrid = () => {
@@ -32,7 +47,7 @@ const ProductGrid = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product._id} product={product} />
         ))}
       </div>
     </div>

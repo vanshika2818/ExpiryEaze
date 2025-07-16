@@ -35,10 +35,10 @@ const ProductsPage = () => {
         <div className="p-6 bg-white rounded-lg shadow">
           <h2 className="text-2xl font-semibold text-green-800 mb-4">💊 Medicines & Health</h2>
           <ul className="pl-4 list-disc text-green-700 space-y-2 cursor-pointer">
-            <li onClick={() => handleSubcategoryClick('Basic Medicines', 'Medicine')}>Basic Medicines</li>
-            <li onClick={() => handleSubcategoryClick('OTC Supplements', 'Medicine')}>OTC Supplements</li>
-            <li onClick={() => handleSubcategoryClick('First-aid Essentials', 'Medicine')}>First-aid Essentials</li>
-            <li onClick={() => handleSubcategoryClick('Immunity Boosters', 'Medicine')}>Immunity Boosters</li>
+            <li onClick={() => handleSubcategoryClick('Medicine','Basic Medicines')}>Basic Medicines</li>
+            <li onClick={() => handleSubcategoryClick('Medicine','OTC Supplements')}>OTC Supplements</li>
+            <li onClick={() => handleSubcategoryClick('Medicine','First-aid Essentials')}>First-aid Essentials</li>
+            <li onClick={() => handleSubcategoryClick('Medicine','Immunity Boosters')}>Immunity Boosters</li>
           </ul>
         </div>
       </div>

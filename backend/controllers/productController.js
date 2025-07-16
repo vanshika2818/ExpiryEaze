@@ -34,11 +34,22 @@ export const getMyProducts = async (req, res) => {
 
 // Get by Filter (for Subcategory)
 export const getFilteredProducts = async (req, res) => {
-  const { subcategory } = req.query;
   try {
-    const products = await Product.find({ subcategory });
+
+    const category = decodeURIComponent(req.query.category || "").trim();
+    const subcategory = decodeURIComponent(req.query.subcategory || "").trim();
+    console.log("🔍 Filtering for:", { category, subcategory });
+
+    const products = await Product.find({ category, subcategory });
+    console.log("🧪 Found:", products.length, "products");
+
     res.json(products);
   } catch (err) {
+    console.error("❌ Error in filtering products:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
+

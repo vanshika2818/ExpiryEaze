@@ -12,14 +12,22 @@ const SubcategoryProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const res = await fetch(`http://localhost:8000/api/products/filter?category=${category}&subcategory=${subcategory}`);
-        const data = await res.json();
-        setProducts(data);
-      } catch (err) {
-        console.error("❌ Error fetching products:", err);
-      }
-    };
+  try {
+    const res = await fetch(`http://localhost:8000/api/products/filter?category=${category}&subcategory=${subcategory}`);
+    const data = await res.json();
+
+    if (!Array.isArray(data)) {
+      console.error("❌ Expected array, got:", data);
+      setProducts([]);
+    } else {
+      setProducts(data);
+    }
+  } catch (err) {
+    console.error("❌ Error fetching products:", err);
+    setProducts([]);
+  }
+};
+
 
     if (category && subcategory) fetchProducts();
   }, [category, subcategory]);

@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  image: String,
+  image: { type: String, required: true },
   price: Number,
-  discountedPrice: Number,     // ✅ Auto-calculated from price and discount
+  discountedPrice: Number,
   discount: Number,
-  expiryDate: String,
-  expiryInDays: Number,        // ✅ Used for badge color (Expires in N days)
-  status: String,              // Active, Low Stock, Expiring Today
+  expiryDate: { type: Date, required: true },
+  expiryInDays: Number,
+  status: String,
   category: String,
   subcategory: String,
   vendorId: {
@@ -17,12 +17,37 @@ const productSchema = new mongoose.Schema({
   },
   stock: Number,
 
-  // ✅ Additional frontend display info
-  store: { type: String, default: "Local Store" },  // e.g., FreshMart
-  distance: { type: String, default: "0.5km" },     // e.g., 0.5km away
-  safety: { type: String, default: "Sealed" },      // e.g., "Refrigerated", etc.
+  // Extra display fields
+  store: { type: String, default: "Local Store" },
+  distance: { type: String, default: "0.5km" },
+  safety: { type: String, default: "Sealed" },
+}, { timestamps: true });
+
+// Auto-calculate fields
+productSchema.pre("save", function (next) {
+  if (this.price && this.discount) {
+    this.discountedPrice = Math.round(this.price - (this.price * this.discount / 100));
+  }
+
+  if (this.expiryDate) {
+    const today = new Date();
+    const expiry = new Date(this.expiryDate);
+    const diffTime = expiry - today;
+    this.expiryInDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  if (this.expiryInDays <= 0) {
+    this.status = "Expired";
+  } else if (this.expiryInDays <= 2) {
+    this.status = "Expiring Today";
+  } else if (this.stock <= 5) {
+    this.status = "Low Stock";
+  } else {
+    this.status = "Active";
+  }
+
+  next();
 });
 
 const Product = mongoose.model("Product", productSchema);
-
 export default Product;

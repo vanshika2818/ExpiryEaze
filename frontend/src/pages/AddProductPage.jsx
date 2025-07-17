@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import axios from "axios";
 
 const AddProductPage = () => {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -34,10 +35,31 @@ const AddProductPage = () => {
     ],
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) setImage(file);
-  };
+const handleImageUpload = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET); // Unsigned preset
+
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.secure_url) {
+      setImage(data.secure_url);
+      console.log("✅ Uploaded:", data.secure_url);
+    } else {
+      throw new Error("Upload failed");
+    }
+  } catch (err) {
+    console.error("Cloudinary Upload Error:", err);
+    alert("❌ Failed to upload image.");
+  }
+};
 
   // ✅ Moved this up to avoid ReferenceError
   const calculateExpiryInDays = (expiry) => {
@@ -62,7 +84,7 @@ const AddProductPage = () => {
 
     const productData = {
       name: productName,
-      image: image ? URL.createObjectURL(image) : "", // 📌 Replace with Cloudinary upload later
+      image, // 📌 Replace with Cloudinary upload later
       price,
       discount,
       discountedPrice: discounted,
@@ -104,7 +126,7 @@ const AddProductPage = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="border-2 border-dashed border-green-400 p-4 rounded text-center">
           <input type="file" accept="image/*" onChange={handleImageUpload} />
-          {image && <p className="mt-2 text-green-600">✔️ {image.name}</p>}
+          {image && <p className="mt-2 text-green-600">✔️ Image uploaded</p>}
         </div>
 
         <input type="text" placeholder="Product Name" className="w-full p-2 border rounded" required value={productName} onChange={(e) => setProductName(e.target.value)} />

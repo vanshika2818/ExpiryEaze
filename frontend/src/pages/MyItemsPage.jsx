@@ -44,7 +44,7 @@ const MyItemsPage = () => {
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:8000/api/products/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`);
       setProducts((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
       console.error("❌ Error deleting product:", err);

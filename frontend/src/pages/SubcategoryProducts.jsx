@@ -16,7 +16,7 @@ const SubcategoryProducts = () => {
       try {
         console.log("Querying for:", { category, subcategory }); // ✅ helpful log
         const res = await axios.get(
-  `http://localhost:8000/api/products/subcategory-products?category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}`
+  `${import.meta.env.VITE_BACKEND_URL}/api/products/subcategory-products?category=${encodeURIComponent(category)}&subcategory=${encodeURIComponent(subcategory)}`
 );
 
         setProducts(res.data);

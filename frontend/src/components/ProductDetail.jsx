@@ -9,7 +9,7 @@ const ProductDetail = () => {
 
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/products/${id}`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`);
       setProduct(res.data);
     } catch (err) {
       console.error("❌ Error fetching product:", err);

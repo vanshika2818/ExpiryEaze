@@ -44,7 +44,7 @@ const handleImageUpload = async (e) => {
   formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET); // Unsigned preset
 
   try {
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_BACKEND_URL}/image/upload`, {
       method: "POST",
       body: formData,
     });
@@ -103,7 +103,7 @@ const handleImageUpload = async (e) => {
     };
 
     try {
-      const res = await fetch("http://localhost:8000/api/products/add", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData),

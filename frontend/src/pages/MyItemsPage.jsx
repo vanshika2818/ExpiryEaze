@@ -27,7 +27,7 @@ const MyItemsPage = () => {
   }
 
   try {
-    const res = await axios.get(`http://localhost:8000/api/products/vendor-products?vendorId=${vendorId}`);
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/vendor-products?vendorId=${vendorId}`);
     setProducts(res.data);
   } catch (err) {
     console.error("❌ Error fetching items:", err);

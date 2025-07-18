@@ -19,7 +19,7 @@ const Signup = ({ setUser }) => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8000/api/auth/register', {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
         name, email, password, role,
       });
 
